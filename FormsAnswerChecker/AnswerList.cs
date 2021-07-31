@@ -24,7 +24,12 @@ namespace FormsAnswerChecker
             {
                 while (streamReader.EndOfStream == false)
                 {
-                    mAnswerList.Add(streamReader.ReadLine());
+                    string member = streamReader.ReadLine();
+                    if (String.IsNullOrWhiteSpace(member))
+                    {
+                        continue;
+                    }
+                    mAnswerList.Add(member);
                 }
             }
         }
