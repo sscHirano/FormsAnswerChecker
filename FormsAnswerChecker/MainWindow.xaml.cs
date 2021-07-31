@@ -14,8 +14,7 @@ namespace FormsAnswerChecker
         /// <summary>
         /// 回答者リスト(回答する必要のある人一覧)
         /// </summary>
-        AnswerList mAnswerList;
-
+        private AnswerList mAnswerList;
 
         public MainWindow()
         {
@@ -54,7 +53,6 @@ namespace FormsAnswerChecker
                 // 複数ファイルがドロップされても、最初のファイルしか見ない。
 
                 // 回答済みリストを取得
-                //List<string> answeredList = GetAnsweredList(fileNames[0]);
                 try
                 {
                     List<string> answeredList = ExcelParser.GetAnsweredList(fileNames[0]);
@@ -71,7 +69,7 @@ namespace FormsAnswerChecker
         }
 
         /// <summary>
-        /// 未回答者一覧
+        /// 未回答者一覧を表示する
         /// </summary>
         /// <param name="unansweredList"></param>
         private void ShowUnansweredList(List<string> unansweredList)
@@ -91,28 +89,15 @@ namespace FormsAnswerChecker
             }
         }
 
+        /// <summary>
+        /// エラーメッセージ表示
+        /// </summary>
+        /// <param name="message"></param>
         private void SetErrorMessage(string message)
         {
             textBox.Text = message;
             textBox.Background = Brushes.Red;
         }
 
-        /// <summary>
-        /// Forms回答ファイルを引数に、回答済みリストを取得する
-        /// </summary>
-        /// <param name="fileName">Forms回答ファイル</param>
-        /// <returns></returns>
-        private List<string> GetAnsweredList(string fileName)
-        {
-            try
-            {
-                return ExcelParser.GetAnsweredList(fileName);
-            }
-            catch (System.IO.IOException e)
-            {
-
-            }
-            return null;
-        }
     }
 }
