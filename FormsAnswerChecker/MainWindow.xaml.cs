@@ -24,7 +24,8 @@ namespace FormsAnswerChecker
 
             if (!ReadAnswerList())
             {
-                SetErrorMessage("回答者のメールアドレス一覧を記載したAnswerList.txtファイルを準備してください");
+                string message = "exeファイルと同じ位置に回答者のメールアドレス一覧を記載したAnswerList.txtファイルを準備してください";
+                SetErrorMessage(message);
             }
         }
 
@@ -37,7 +38,7 @@ namespace FormsAnswerChecker
             {
                 mAnswerList = new AnswerList();
             }
-            catch (System.IO.FileNotFoundException e)
+            catch (System.IO.FileNotFoundException)
             {
                 // ファイル無し
                 return false;
@@ -61,7 +62,7 @@ namespace FormsAnswerChecker
                     ShowUnansweredList(unansweredList);
 
                 }
-                catch (System.IO.IOException e)
+                catch (System.IO.IOException)
                 {
                     SetErrorMessage("ファイルアクセスエラー：ファイルを開いていませんか？");
                 }
