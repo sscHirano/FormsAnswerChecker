@@ -23,7 +23,12 @@ namespace FormsAnswerChecker
         {
             XLWorkbook workbook = new XLWorkbook(fileName);
             IXLWorksheet worksheet = workbook.Worksheet(1);
-            int lastRow = worksheet.LastRowUsed().RowNumber();
+            var lastRowUsed = worksheet.LastRowUsed();
+            if (lastRowUsed == null)
+            {
+                return new List<string>();
+            }
+            int lastRow = lastRowUsed.RowNumber();
             // 回答済みメンバー(メールアドレス)一覧を取得 (1行目のヘッダーはスキップ)
             List<string> answeredLisd = new List<string>(lastRow);
             for (int i = 2; i <= lastRow; i++)
