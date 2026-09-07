@@ -106,6 +106,12 @@ namespace FormsAnswerChecker
         {
             if (dragEvent.Data.GetDataPresent(DataFormats.FileDrop))
             {
+                if (mAnswerList == null)
+                {
+                    SetErrorMessage("回答対象者リストが読み込まれていません。");
+                    return;
+                }
+
                 var fileNames = (string[])dragEvent.Data.GetData(DataFormats.FileDrop);
                 // 複数ファイルがドロップされても、最初のファイルしか見ない。
 
