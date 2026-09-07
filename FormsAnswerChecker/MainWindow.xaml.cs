@@ -114,8 +114,9 @@ namespace FormsAnswerChecker
                 {
                     List<string> answeredList = ExcelParser.GetAnsweredList(fileNames[0]);
                     List<string> unansweredList = mAnswerList.GetUnansweredList(answeredList);
+                    List<string> unexpectedList = mAnswerList.GetUnexpectedAnsweredList(answeredList);
 
-                    ShowUnansweredList(unansweredList);
+                    ShowResult(unansweredList, unexpectedList);
 
                 }
                 catch (System.IO.IOException)
@@ -126,24 +127,38 @@ namespace FormsAnswerChecker
         }
 
         /// <summary>
-        /// 未回答者一覧を表示する
+        /// チェック結果（未回答者一覧および想定外の回答者警告）を表示する
         /// </summary>
-        /// <param name="unansweredList"></param>
-        private void ShowUnansweredList(List<string> unansweredList)
+        /// <param name="unansweredList">未回答者リスト</param>
+        /// <param name="unexpectedList">想定外の回答者リスト</param>
+        private void ShowResult(List<string> unansweredList, List<string> unexpectedList)
         {
+            string message = "";
+
+            if (unexpectedList.Count > 0)
+            {
+                message += "【警告】対象者リストに登録されていない人の回答があります：\n----\n";
+                foreach (string unexpected in unexpectedList)
+                {
+                    message += unexpected + "\n";
+                }
+                message += "\n";
+            }
+
             if (unansweredList.Count == 0)
             {
-                MessageBox.Show("全員回答済み！");
+                message += "全員回答済み！";
             }
             else
             {
-                string message = "未回答者は以下です。\nCtrl + cを押し、クリップボードに一覧をコピーして催促メール等にご活用ください\n----\n";
+                message += "未回答者は以下です。\nCtrl + cを押し、クリップボードに一覧をコピーして催促メール等にご活用ください\n----\n";
                 foreach (string unanswer in unansweredList)
                 {
                     message += unanswer + "\n";
                 }
-                MessageBox.Show(message);
             }
+
+            MessageBox.Show(message);
         }
 
         /// <summary>

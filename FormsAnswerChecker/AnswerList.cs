@@ -50,5 +50,23 @@ namespace FormsAnswerChecker
             return unansweredList;
         }
 
+        /// <summary>
+        /// 実際の回答者を引数に受け取り、対象リストに存在しない回答者（想定外の回答者）を返却する
+        /// </summary>
+        /// <param name="answeredList">回答済みリスト</param>
+        /// <returns>対象外の回答者一覧</returns>
+        internal List<string> GetUnexpectedAnsweredList(List<string> answeredList)
+        {
+            List<string> unexpectedList = new List<string>();
+            foreach (string answer in answeredList)
+            {
+                if (!mAnswerList.Contains(answer) && !unexpectedList.Contains(answer))
+                {
+                    unexpectedList.Add(answer);
+                }
+            }
+            return unexpectedList;
+        }
+
     }
 }
