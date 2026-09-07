@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,18 +9,16 @@ namespace FormsAnswerChecker
 {
     class AnswerList
     {
-        private readonly string ANSWER_LIST_FILE_NAME = "AnswerList.txt";
-
         private List<string> mAnswerList = new List<string>();
 
         /// <summary>
         /// コンストラクタ
-        /// ファイルを読み込み、リストを作成する
-        /// exeと同じ位置にAnswerList.txtを準備しておくこと
+        /// 指定されたファイルを読み込み、リストを作成する
         /// </summary>
-        internal AnswerList()
+        /// <param name="filePath">回答者リストファイルのパス</param>
+        internal AnswerList(string filePath)
         {
-            using (StreamReader streamReader = new StreamReader(ANSWER_LIST_FILE_NAME, Encoding.UTF8))
+            using (StreamReader streamReader = new StreamReader(filePath, Encoding.UTF8))
             {
                 while (streamReader.EndOfStream == false)
                 {

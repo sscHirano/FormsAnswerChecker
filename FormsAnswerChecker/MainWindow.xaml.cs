@@ -1,5 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -11,6 +13,8 @@ namespace FormsAnswerChecker
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const string ANSWER_LISTS_DIR = "AnswerLists";
+
         /// <summary>
         /// 回答者リスト(回答する必要のある人一覧)
         /// </summary>
@@ -21,26 +25,78 @@ namespace FormsAnswerChecker
             InitializeComponent();
 
             AddHandler(TextBox.DropEvent, new DragEventHandler(FileListBox_Drop), true);
+            AddHandler(TextBox.PreviewDragOverEvent, new DragEventHandler(Window_PreviewDragOver), true);
 
-            if (!ReadAnswerList())
+            InitCategoryList();
+        }
+
+        private void Window_PreviewDragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                string message = "exeファイルと同じ位置に回答者のメールアドレス一覧を記載したAnswerList.txtファイルを準備してください";
-                SetErrorMessage(message);
+                e.Effects = DragDropEffects.Copy;
+                e.Handled = true;
+            }
+        }
+
+        /// <summary>
+        /// AnswerListsフォルダ内のテキストファイル一覧をComboBoxにセットする
+        /// </summary>
+        private void InitCategoryList()
+        {
+            string dirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ANSWER_LISTS_DIR);
+
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
+
+            var txtFiles = Directory.GetFiles(dirPath, "*.txt");
+
+            if (txtFiles.Length == 0)
+            {
+                SetErrorMessage(string.Format("exeと同じ位置の {0} フォルダ内に、回答者一覧テキストファイル(.txt)を配置してください。", ANSWER_LISTS_DIR));
+                return;
+            }
+
+            foreach (var file in txtFiles)
+            {
+                categoryComboBox.Items.Add(Path.GetFileName(file));
+            }
+
+            categoryComboBox.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// カテゴリ選択変更時イベント
+        /// </summary>
+        private void CategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (categoryComboBox.SelectedItem == null)
+            {
+                return;
+            }
+
+            string fileName = categoryComboBox.SelectedItem.ToString();
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ANSWER_LISTS_DIR, fileName);
+
+            if (!ReadAnswerList(filePath))
+            {
+                SetErrorMessage(string.Format("ファイルの読み込みに失敗しました: {0}", fileName));
             }
         }
 
         /// <summary>
         /// 対象となる回答者一覧を読み込む。
         /// </summary>
-        private bool ReadAnswerList()
+        private bool ReadAnswerList(string filePath)
         {
             try
             {
-                mAnswerList = new AnswerList();
+                mAnswerList = new AnswerList(filePath);
             }
-            catch (System.IO.FileNotFoundException)
+            catch (Exception)
             {
-                // ファイル無し
                 return false;
             }
             return true;
