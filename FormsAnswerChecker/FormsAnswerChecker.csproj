@@ -116,8 +116,8 @@
     <None Include="AnswerLists\東京社員.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Readme.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Readme.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
