@@ -29,7 +29,7 @@ namespace FormsAnswerChecker
                 return new List<string>();
             }
             int lastRow = lastRowUsed.RowNumber();
-            // 回答済みメンバー(メールアドレス)一覧を取得 (1行目のヘッダーはスキップ)
+            // 回答済みメンバー(メールアドレス)一覧を取得 (Excelライブラリではindexが1始まり)
             List<string> answeredLisd = new List<string>(lastRow);
             for (int i = 2; i <= lastRow; i++)
             {

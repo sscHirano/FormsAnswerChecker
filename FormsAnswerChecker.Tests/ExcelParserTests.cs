@@ -102,5 +102,52 @@ namespace FormsAnswerChecker.Tests
             Assert.IsNotNull(answeredList);
             Assert.AreEqual(0, answeredList.Count);
         }
+
+        [TestMethod]
+        public void GetAnsweredList_実ファイルの正常なExcelからメールアドレスを抽出できること()
+        {
+            // 準備: 回答済みリストのエクセルファイルのパス(user1～user10)
+            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test.xlsx");
+
+            // 実行
+            List<string> answeredList = ExcelParser.GetAnsweredList(answeredFilePath);
+
+            // 検証: 1行目はスキップされ、2行目以降のメールアドレスのみ取得されること
+            CollectionAssert.AreEqual(
+                new List<string> {
+                    "user1@example.com", "user2@example.com", 
+                    "user3@example.com", "user4@example.com", 
+                    "user5@example.com", "user6@example.com", 
+                    "user7@example.com", "user8@example.com", 
+                    "user9@example.com", "user10@example.com" },
+                answeredList
+            );
+        }
+        
+        [TestMethod]
+        public void GetAnsweredList_実ファイルのヘッダーのみのExcelの場合_回答済みリストの件数が0であること()
+        {
+            // 準備: 回答済みリストのエクセルファイルのパス(ヘッダーのみ)
+            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test02.xlsx");
+
+            // 実行
+            List<string> answeredList = ExcelParser.GetAnsweredList(answeredFilePath);
+
+            // 検証: 回答済みリストの件数が0であること
+            Assert.AreEqual(0, answeredList.Count);
+        }
+
+        [TestMethod]
+        public void GetAnsweredList_実ファイルの完全に空のExcelの場合_回答済みリストの件数が0であること()
+        {
+            // 準備: 回答済みリストのエクセルファイルのパス(完全に空)
+            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test03.xlsx");
+
+            // 実行
+            List<string> answeredList = ExcelParser.GetAnsweredList(answeredFilePath);
+
+            // 検証: 回答済みリストの件数が0であること
+            Assert.AreEqual(0, answeredList.Count);
+        }
     }
 }
