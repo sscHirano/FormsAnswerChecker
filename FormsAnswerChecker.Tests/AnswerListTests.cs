@@ -143,7 +143,7 @@ namespace FormsAnswerChecker.Tests
         public void コンストラクタ_実ファイルを使用して正しく読み込めること()
         {
             // 準備: テスト用回答者リストのパス
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestAnswersList.txt");
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "TestAnswersList.txt");
 
             // 実行
             var answerList = new AnswerList(path);
@@ -161,9 +161,9 @@ namespace FormsAnswerChecker.Tests
         public void GetUnansweredList_実ファイルを使用して未回答者が正しく抽出されること()
         {
             // 準備: 回答対象者リストのパス(user1～user11)
-            string answerListPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestAnswersList02.txt");
+            string answerListPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "TestAnswersList02.txt");
             // 準備: 回答済みリストのエクセルファイルのパス(user1～user10)
-            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test.xlsx");
+            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "test.xlsx");
 
             // 実行
             var answerList = new AnswerList(answerListPath);
@@ -181,9 +181,9 @@ namespace FormsAnswerChecker.Tests
         public void GetUnansweredList_実ファイルを使用して全員回答済みの場合は空リストが返ること()
         {
             // 準備: 回答対象者リストのパス(user1～user10)
-            string answerListPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestAnswersList03.txt");
+            string answerListPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "TestAnswersList03.txt");
             // 準備: 回答済みリストのエクセルファイルのパス(user1～user10)
-            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test.xlsx");
+            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "test.xlsx");
 
             // 実行
             var answerList = new AnswerList(answerListPath);
@@ -198,9 +198,9 @@ namespace FormsAnswerChecker.Tests
         public void GetUnexpectedAnsweredList_実ファイルを使用して想定外の回答者が正しく抽出されること()
         {
             // 準備: 回答対象者リストのパス(user1～user9)
-            string answerListPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestAnswersList04.txt");
+            string answerListPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "TestAnswersList04.txt");
             // 準備: 回答済みリストのエクセルファイルのパス(user1～user10)
-            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test.xlsx");
+            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "test.xlsx");
 
             // 実行
             var answerList = new AnswerList(answerListPath);
@@ -218,9 +218,9 @@ namespace FormsAnswerChecker.Tests
         public void 実ファイルを使用して想定外の回答者と未回答者の両方が正しく抽出されること()
         {
             // 準備: 回答対象者リストのパス(user1～user9, user11)
-            string answerListPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestAnswersList05.txt");
+            string answerListPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "TestAnswersList05.txt");
             // 準備: 回答済みリストのエクセルファイルのパス(user1～user10)
-            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test.xlsx");
+            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "test.xlsx");
 
             // 実行
             var answerList = new AnswerList(answerListPath);

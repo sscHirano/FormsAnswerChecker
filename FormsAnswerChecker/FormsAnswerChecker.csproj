@@ -116,7 +116,8 @@
     <None Include="AnswerLists\東京社員.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Readme.md">
+    <None Include="..\Readme.md">
+      <Link>Readme.md</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

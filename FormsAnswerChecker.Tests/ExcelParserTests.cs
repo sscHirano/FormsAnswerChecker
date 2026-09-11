@@ -107,7 +107,7 @@ namespace FormsAnswerChecker.Tests
         public void GetAnsweredList_実ファイルの正常なExcelからメールアドレスを抽出できること()
         {
             // 準備: 回答済みリストのエクセルファイルのパス(user1～user10)
-            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test.xlsx");
+            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "test.xlsx");
 
             // 実行
             List<string> answeredList = ExcelParser.GetAnsweredList(answeredFilePath);
@@ -128,7 +128,7 @@ namespace FormsAnswerChecker.Tests
         public void GetAnsweredList_実ファイルのヘッダーのみのExcelの場合_回答済みリストの件数が0であること()
         {
             // 準備: 回答済みリストのエクセルファイルのパス(ヘッダーのみ)
-            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test02.xlsx");
+            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "test02.xlsx");
 
             // 実行
             List<string> answeredList = ExcelParser.GetAnsweredList(answeredFilePath);
@@ -141,7 +141,7 @@ namespace FormsAnswerChecker.Tests
         public void GetAnsweredList_実ファイルの完全に空のExcelの場合_回答済みリストの件数が0であること()
         {
             // 準備: 回答済みリストのエクセルファイルのパス(完全に空)
-            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test03.xlsx");
+            string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "test03.xlsx");
 
             // 実行
             List<string> answeredList = ExcelParser.GetAnsweredList(answeredFilePath);
