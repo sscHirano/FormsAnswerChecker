@@ -21,6 +21,7 @@ Microsoft Forms の回答結果エクセルと回答対象者リストを突き�
 FormsAnswerChecker/
 ├── FormsAnswerChecker.exe
 └── AnswerLists/
+    ├── 全社員.txt
     ├── 大阪社員.txt
     └── 東京社員.txt
 ```
@@ -33,9 +34,9 @@ FormsAnswerChecker/
 
 **記述例（大阪社員.txt）**:
 ```text
-user1@example.com
-user2@example.com
-user3@example.com
+osakaUser1@example.com
+osakaUser2@example.com
+osakaUser3@example.com
 ```
 
 ---

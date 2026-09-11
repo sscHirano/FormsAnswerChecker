@@ -1,3 +1,6 @@
 osakaUser1@example.com
 osakaUser2@example.com
 osakaUser3@example.com
+tokyoUser1@example.com
+tokyoUser2@example.com
+tokyoUser3@example.com
