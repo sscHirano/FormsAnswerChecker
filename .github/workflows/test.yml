@@ -1,0 +1,53 @@
+name: RunUnitTests
+
+# トリガー: push / pull_request / 手動実行
+on:
+  push:
+    branches: [ "master", "test_github_actions", "fromAnswerCheker_ki" ]
+  pull_request:
+    branches: [ "master", "test_github_actions", "fromAnswerCheker_ki" ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Build & Test (.NET Framework)
+    # Windows Forms / .NET Framework 4.6 のため Windows 環境を指定
+    runs-on: windows-latest
+
+    steps:
+      # ステップ1: リポジトリのソースコードを取得
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ステップ2: NuGet CLI をセットアップ（公式アクション）
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+
+      # ステップ3: MSBuild をセットアップ（公式アクション）
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      # ステップ4: NuGet パッケージの復元（ClosedXML, MSTest等）
+      - name: Restore NuGet packages
+        run: nuget restore FormsAnswerChecker.sln
+
+      # ステップ5: MSBuild でソリューションをビルド
+      - name: Build solution
+        run: msbuild FormsAnswerChecker.sln /p:Configuration=Debug /p:Platform="Any CPU" /v:minimal
+
+      # ステップ6: MSTest (vstest.console.exe) で単体テストを実行
+      - name: Run Unit Tests
+        shell: powershell
+        run: |
+          # Visual Studio に付属する vstest.console.exe のパスを取得
+          $vsPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
+          $vstest = Join-Path $vsPath "Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
+          
+          Write-Host "Running tests with: $vstest"
+          & $vstest FormsAnswerChecker.Tests\bin\Debug\FormsAnswerChecker.Tests.dll /logger:"Console;verbosity=detailed"
+          
+          # テスト失敗時にワークフローをエラー（赤）にする判定
+          if ($LASTEXITCODE -ne 0) {
+              Write-Error "テストが失敗しました (終了コード: $LASTEXITCODE)"
+              exit $LASTEXITCODE
+          }
