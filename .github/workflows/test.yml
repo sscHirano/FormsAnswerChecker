@@ -31,9 +31,17 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore FormsAnswerChecker.sln
 
-      # ステップ5: MSBuild でソリューションをビルド
-      - name: Build solution
-        run: msbuild FormsAnswerChecker.sln /p:Configuration=Debug /p:Platform="Any CPU" /v:minimal
+      # ステップ5: MSBuild でソリューションをビルドし、静的解析を実行
+      - name: Build solution with static analysis
+        run: |
+          msbuild FormsAnswerChecker.sln `
+            /p:Configuration=Debug `
+            /p:Platform="Any CPU" `
+            /p:RunCodeAnalysis=true `
+            /p:EnableNETAnalyzers=true `
+            /p:AnalysisMode=AllEnabledByDefault `
+            /p:TreatWarningsAsErrors=true `
+            /v:minimal
 
       # ステップ6: MSTest (vstest.console.exe) で単体テストを実行
       - name: Run Unit Tests
