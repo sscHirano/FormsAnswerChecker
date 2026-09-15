@@ -52,7 +52,7 @@ jobs:
             /p:RunCodeAnalysis=true `
             /p:EnableNETAnalyzers=true `
             /p:AnalysisMode=AllEnabledByDefault `
-            /p:TreatWarningsAsErrors=true `
+            /p:CodeAnalysisTreatWarningsAsErrors=true `
             /v:minimal
 
       # ステップ7: MSTest (vstest.console.exe) で単体テストを実行
