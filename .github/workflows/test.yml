@@ -40,7 +40,7 @@ jobs:
         run: |
           msbuild FormsAnswerChecker/FormsAnswerChecker.csproj `
             /p:Configuration=Debug `
-            /p:Platform="Any CPU" `
+            /p:Platform="AnyCPU" `
             /p:RunCodeAnalysis=true `
             /p:EnableNETAnalyzers=true `
             /p:AnalysisMode=AllEnabledByDefault `
