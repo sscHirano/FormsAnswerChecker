@@ -55,7 +55,10 @@ namespace FormsAnswerChecker
 
             if (txtFiles.Length == 0)
             {
-                SetErrorMessage(string.Format("exeと同じ位置の {0} フォルダ内に、回答者一覧テキストファイル(.txt)を配置してください。", ANSWER_LISTS_DIR));
+                SetErrorMessage(
+                    Properties.Resources.AnswerListsNotFoundPrefix +
+                    ANSWER_LISTS_DIR +
+                    Properties.Resources.AnswerListsNotFoundSuffix);
                 return;
             }
 
@@ -82,7 +85,7 @@ namespace FormsAnswerChecker
 
             if (!ReadAnswerList(filePath))
             {
-                SetErrorMessage(string.Format("ファイルの読み込みに失敗しました: {0}", fileName));
+                SetErrorMessage(Properties.Resources.FileLoadErrorPrefix + fileName);
             }
         }
 
@@ -95,7 +98,7 @@ namespace FormsAnswerChecker
             {
                 mAnswerList = new AnswerList(filePath);
             }
-            catch (Exception)
+            catch (IOException)
             {
                 return false;
             }
@@ -108,7 +111,7 @@ namespace FormsAnswerChecker
             {
                 if (mAnswerList == null)
                 {
-                    SetErrorMessage("回答対象者リストが読み込まれていません。");
+                    SetErrorMessage(Properties.Resources.AnswerListNotLoaded);
                     return;
                 }
 
@@ -127,7 +130,7 @@ namespace FormsAnswerChecker
                 }
                 catch (System.IO.IOException)
                 {
-                    SetErrorMessage("ファイルアクセスエラー：ファイルを開いていませんか？");
+                    SetErrorMessage(Properties.Resources.FileAccessError);
                 }
             }
         }
@@ -137,7 +140,7 @@ namespace FormsAnswerChecker
         /// </summary>
         /// <param name="unansweredList">未回答者リスト</param>
         /// <param name="unexpectedList">想定外の回答者リスト</param>
-        private void ShowResult(List<string> unansweredList, List<string> unexpectedList)
+        private static void ShowResult(List<string> unansweredList, List<string> unexpectedList)
         {
             string message = "";
 

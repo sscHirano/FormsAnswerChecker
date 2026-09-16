@@ -12,7 +12,7 @@ namespace FormsAnswerChecker
         /// <summary>
         /// メールアドレスの列(D列)Index
         /// </summary>
-        private static readonly int MAIL_ADDRESS_INDEX = 4;
+        private const int MAIL_ADDRESS_INDEX = 4;
 
         /// <summary>
         /// 回答済みメンバー(メールアドレス)一覧を取得する
@@ -21,23 +21,25 @@ namespace FormsAnswerChecker
         /// <returns></returns>
         internal static List<string> GetAnsweredList(string fileName)
         {
-            XLWorkbook workbook = new XLWorkbook(fileName);
-            IXLWorksheet worksheet = workbook.Worksheet(1);
-            var lastRowUsed = worksheet.LastRowUsed();
-            if (lastRowUsed == null)
+            using (XLWorkbook workbook = new XLWorkbook(fileName))
             {
-                return new List<string>();
+                IXLWorksheet worksheet = workbook.Worksheet(1);
+                var lastRowUsed = worksheet.LastRowUsed();
+                if (lastRowUsed == null)
+                {
+                    return new List<string>();
+                }
+                int lastRow = lastRowUsed.RowNumber();
+                // 回答済みメンバー(メールアドレス)一覧を取得 (Excelライブラリではindexが1始まり)
+                List<string> answeredLisd = new List<string>(lastRow);
+                for (int i = 2; i <= lastRow; i++)
+                {
+                    IXLCell cell = worksheet.Cell(i, MAIL_ADDRESS_INDEX);
+                    Console.WriteLine(cell.Value);
+                    answeredLisd.Add(cell.Value.ToString());
+                }
+                return answeredLisd;
             }
-            int lastRow = lastRowUsed.RowNumber();
-            // 回答済みメンバー(メールアドレス)一覧を取得 (Excelライブラリではindexが1始まり)
-            List<string> answeredLisd = new List<string>(lastRow);
-            for (int i = 2; i <= lastRow; i++)
-            {
-                IXLCell cell = worksheet.Cell(i, MAIL_ADDRESS_INDEX);
-                Console.WriteLine(cell.Value);
-                answeredLisd.Add(cell.Value.ToString());
-            }
-            return answeredLisd;
         }
     }
 }

@@ -114,4 +114,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AnswerListsNotFoundPrefix" xml:space="preserve">
+    <value>exeと同じ位置の </value>
+  </data>
+  <data name="AnswerListsNotFoundSuffix" xml:space="preserve">
+    <value> フォルダ内に、回答者一覧テキストファイル(.txt)を配置してください。</value>
+  </data>
+  <data name="FileLoadErrorPrefix" xml:space="preserve">
+    <value>ファイルの読み込みに失敗しました: </value>
+  </data>
+  <data name="AnswerListNotLoaded" xml:space="preserve">
+    <value>回答対象者リストが読み込まれていません。</value>
+  </data>
+  <data name="FileAccessError" xml:space="preserve">
+    <value>ファイルアクセスエラー：ファイルを開いていませんか？</value>
+  </data>
 </root>
