@@ -60,6 +60,12 @@ namespace FormsAnswerChecker.Properties {
             }
         }
 
+        internal static string AnswerListsDirectoryName {
+            get {
+                return ResourceManager.GetString("AnswerListsDirectoryName", resourceCulture);
+            }
+        }
+
         internal static string AnswerListsNotFoundPrefix {
             get {
                 return ResourceManager.GetString("AnswerListsNotFoundPrefix", resourceCulture);

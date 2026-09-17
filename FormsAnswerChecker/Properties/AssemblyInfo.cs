@@ -1,5 +1,7 @@
+using System;
 using System.Reflection;
 using System.Resources;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -15,6 +17,9 @@ using System.Windows;
 [assembly: AssemblyCopyright("Copyright © HP Inc. 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: CLSCompliant(true)]
+[assembly: NeutralResourcesLanguage("ja-JP")]
+[assembly: SuppressMessage("Microsoft.Design", "CA2210:Assemblies should have strong name")]
 
 // ComVisible を false に設定すると、このアセンブリ内の型は COM コンポーネントから
 // 参照できなくなります。COM からこのアセンブリ内の型にアクセスする必要がある場合は、
@@ -27,9 +32,6 @@ using System.Windows;
 //ソース ファイルで英語を使用している場合、<UICulture> を en-US に設定します。次に、
 //下の NeutralResourceLanguage 属性のコメントを解除します。下の行の "en-US" を
 //プロジェクト ファイルの UICulture 設定と一致するよう更新します。
-
-//[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
-
 
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //テーマ固有のリソース ディクショナリが置かれている場所

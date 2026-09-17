@@ -13,8 +13,6 @@ namespace FormsAnswerChecker
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string ANSWER_LISTS_DIR = "AnswerLists";
-
         /// <summary>
         /// 回答者リスト(回答する必要のある人一覧)
         /// </summary>
@@ -44,7 +42,8 @@ namespace FormsAnswerChecker
         /// </summary>
         private void InitCategoryList()
         {
-            string dirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ANSWER_LISTS_DIR);
+            string answerListsDir = Properties.Resources.AnswerListsDirectoryName;
+            string dirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, answerListsDir);
 
             if (!Directory.Exists(dirPath))
             {
@@ -57,7 +56,7 @@ namespace FormsAnswerChecker
             {
                 SetErrorMessage(
                     Properties.Resources.AnswerListsNotFoundPrefix +
-                    ANSWER_LISTS_DIR +
+                    answerListsDir +
                     Properties.Resources.AnswerListsNotFoundSuffix);
                 return;
             }
@@ -81,7 +80,7 @@ namespace FormsAnswerChecker
             }
 
             string fileName = categoryComboBox.SelectedItem.ToString();
-            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ANSWER_LISTS_DIR, fileName);
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Properties.Resources.AnswerListsDirectoryName, fileName);
 
             if (!ReadAnswerList(filePath))
             {
