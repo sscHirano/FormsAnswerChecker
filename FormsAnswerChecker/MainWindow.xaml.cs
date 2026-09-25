@@ -1,5 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -12,35 +14,92 @@ namespace FormsAnswerChecker
     public partial class MainWindow : Window
     {
         /// <summary>
-        /// 回答者リスト(回答する必要のある人一覧)
+        /// 回答依頼者リスト(回答する必要のある人一覧)
         /// </summary>
-        private AnswerList mAnswerList;
+        private AnswerRequestList mAnswerRequestList;
 
         public MainWindow()
         {
             InitializeComponent();
 
             AddHandler(TextBox.DropEvent, new DragEventHandler(FileListBox_Drop), true);
+            AddHandler(TextBox.PreviewDragOverEvent, new DragEventHandler(Window_PreviewDragOver), true);
 
-            if (!ReadAnswerList())
+            InitCategoryList();
+        }
+
+        private void Window_PreviewDragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                string message = "exeファイルと同じ位置に回答者のメールアドレス一覧を記載したAnswerList.txtファイルを準備してください";
-                SetErrorMessage(message);
+                e.Effects = DragDropEffects.Copy;
+                e.Handled = true;
+            }
+        }
+
+        /// <summary>
+        /// AnswerListsフォルダ内のテキストファイル一覧をComboBoxにセットする
+        /// </summary>
+        private void InitCategoryList()
+        {
+            string answerListsDir = Properties.Resources.AnswerListsDirectoryName;
+            string dirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, answerListsDir);
+
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
+
+            var txtFiles = Directory.GetFiles(dirPath, "*.txt");
+
+            if (txtFiles.Length == 0)
+            {
+                SetErrorMessage(
+                    Properties.Resources.AnswerListsNotFoundPrefix +
+                    answerListsDir +
+                    Properties.Resources.AnswerListsNotFoundSuffix);
+                return;
+            }
+
+            foreach (var file in txtFiles)
+            {
+                categoryComboBox.Items.Add(Path.GetFileName(file));
+            }
+
+            categoryComboBox.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// カテゴリ選択変更時イベント
+        /// </summary>
+        private void CategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (categoryComboBox.SelectedItem == null)
+            {
+                return;
+            }
+
+            string fileName = categoryComboBox.SelectedItem.ToString();
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Properties.Resources.AnswerListsDirectoryName, fileName);
+
+            if (!ReadAnswerList(filePath))
+            {
+                SetErrorMessage(Properties.Resources.FileLoadErrorPrefix + fileName);
             }
         }
 
         /// <summary>
         /// 対象となる回答者一覧を読み込む。
         /// </summary>
-        private bool ReadAnswerList()
+        private bool ReadAnswerList(string filePath)
         {
             try
             {
-                mAnswerList = new AnswerList();
+                mAnswerRequestList = new AnswerRequestList(filePath);
             }
-            catch (System.IO.FileNotFoundException)
+            catch (IOException)
             {
-                // ファイル無し
+                mAnswerRequestList = null;
                 return false;
             }
             return true;
@@ -50,44 +109,64 @@ namespace FormsAnswerChecker
         {
             if (dragEvent.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                var fileNames = (string[])dragEvent.Data.GetData(DataFormats.FileDrop);
+                if (mAnswerRequestList == null)
+                {
+                    SetErrorMessage(Properties.Resources.AnswerListNotLoaded);
+                    return;
+                }
                 // 複数ファイルがドロップされても、最初のファイルしか見ない。
+                var fileNames = (string[])dragEvent.Data.GetData(DataFormats.FileDrop);
 
                 // 回答済みリストを取得
                 try
                 {
                     List<string> answeredList = ExcelParser.GetAnsweredList(fileNames[0]);
-                    List<string> unansweredList = mAnswerList.GetUnansweredList(answeredList);
+                    List<string> unansweredList = mAnswerRequestList.GetUnansweredList(answeredList);
+                    List<string> unexpectedList = mAnswerRequestList.GetUnexpectedAnsweredList(answeredList);
 
-                    ShowUnansweredList(unansweredList);
+                    ShowResult(unansweredList, unexpectedList);
 
                 }
                 catch (System.IO.IOException)
                 {
-                    SetErrorMessage("ファイルアクセスエラー：ファイルを開いていませんか？");
+                    SetErrorMessage(Properties.Resources.FileAccessError);
                 }
             }
         }
 
         /// <summary>
-        /// 未回答者一覧を表示する
+        /// チェック結果（未回答者一覧および想定外の回答者警告）を表示する
         /// </summary>
-        /// <param name="unansweredList"></param>
-        private void ShowUnansweredList(List<string> unansweredList)
+        /// <param name="unansweredList">未回答者リスト</param>
+        /// <param name="unexpectedList">想定外の回答者リスト</param>
+        private static void ShowResult(List<string> unansweredList, List<string> unexpectedList)
         {
+            string message = "";
+
+            if (unexpectedList.Count > 0)
+            {
+                message += "【警告】対象者リストに登録されていない人の回答があります：\n----\n";
+                foreach (string unexpected in unexpectedList)
+                {
+                    message += unexpected + "\n";
+                }
+                message += "\n";
+            }
+
             if (unansweredList.Count == 0)
             {
-                MessageBox.Show("全員回答済み！");
+                message += "全員回答済み！";
             }
             else
             {
-                string message = "未回答者は以下です。\nCtrl + cを押し、クリップボードに一覧をコピーして催促メール等にご活用ください\n----\n";
+                message += "未回答者は以下です。\nCtrl + cを押し、クリップボードに一覧をコピーして催促メール等にご活用ください\n----\n";
                 foreach (string unanswer in unansweredList)
                 {
                     message += unanswer + "\n";
                 }
-                MessageBox.Show(message);
             }
+
+            MessageBox.Show(message);
         }
 
         /// <summary>
