@@ -30,12 +30,11 @@ namespace FormsAnswerChecker
                     return new List<string>();
                 }
                 int lastRow = lastRowUsed.RowNumber();
-                // 回答済みメンバー(メールアドレス)一覧を取得 (Excelライブラリではindexが1始まり)
                 List<string> answeredLisd = new List<string>(lastRow);
+                // 回答済みメンバー(メールアドレス)一覧を取得 (1行目はヘッダー行のため2行目から開始。Excelライブラリではindexが1始まり)
                 for (int i = 2; i <= lastRow; i++)
                 {
                     IXLCell cell = worksheet.Cell(i, MAIL_ADDRESS_INDEX);
-                    Console.WriteLine(cell.Value);
                     answeredLisd.Add(cell.Value.ToString());
                 }
                 return answeredLisd;
