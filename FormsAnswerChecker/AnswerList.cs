@@ -9,7 +9,7 @@ namespace FormsAnswerChecker
 {
     class AnswerList
     {
-        private List<string> mAnswerList = new List<string>();
+        private readonly List<string> mAnswerList = new List<string>();
 
         /// <summary>
         /// コンストラクタ
