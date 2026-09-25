@@ -14,9 +14,9 @@ namespace FormsAnswerChecker
     public partial class MainWindow : Window
     {
         /// <summary>
-        /// 回答者リスト(回答する必要のある人一覧)
+        /// 回答依頼者リスト(回答する必要のある人一覧)
         /// </summary>
-        private AnswerList mAnswerList;
+        private AnswerRequestList mAnswerRequestList;
 
         public MainWindow()
         {
@@ -95,7 +95,7 @@ namespace FormsAnswerChecker
         {
             try
             {
-                mAnswerList = new AnswerList(filePath);
+                mAnswerRequestList = new AnswerRequestList(filePath);
             }
             catch (IOException)
             {
@@ -108,7 +108,7 @@ namespace FormsAnswerChecker
         {
             if (dragEvent.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                if (mAnswerList == null)
+                if (mAnswerRequestList == null)
                 {
                     SetErrorMessage(Properties.Resources.AnswerListNotLoaded);
                     return;
@@ -121,8 +121,8 @@ namespace FormsAnswerChecker
                 try
                 {
                     List<string> answeredList = ExcelParser.GetAnsweredList(fileNames[0]);
-                    List<string> unansweredList = mAnswerList.GetUnansweredList(answeredList);
-                    List<string> unexpectedList = mAnswerList.GetUnexpectedAnsweredList(answeredList);
+                    List<string> unansweredList = mAnswerRequestList.GetUnansweredList(answeredList);
+                    List<string> unexpectedList = mAnswerRequestList.GetUnexpectedAnsweredList(answeredList);
 
                     ShowResult(unansweredList, unexpectedList);
 

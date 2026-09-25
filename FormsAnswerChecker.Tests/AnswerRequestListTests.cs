@@ -8,7 +8,7 @@ using FormsAnswerChecker;
 namespace FormsAnswerChecker.Tests
 {
     [TestClass]
-    public class AnswerListTests
+    public class AnswerRequestListTests
     {
         private string mTempFilePath;
 
@@ -30,7 +30,7 @@ namespace FormsAnswerChecker.Tests
 
         private string CreateTempAnswerFile(IEnumerable<string> lines)
         {
-            mTempFilePath = Path.Combine(Path.GetTempPath(), "AnswerListTest_" + Guid.NewGuid().ToString() + ".txt");
+            mTempFilePath = Path.Combine(Path.GetTempPath(), "AnswerRequestListTest_" + Guid.NewGuid().ToString() + ".txt");
             File.WriteAllLines(mTempFilePath, lines, Encoding.UTF8);
             return mTempFilePath;
         }
@@ -50,11 +50,11 @@ namespace FormsAnswerChecker.Tests
             string path = CreateTempAnswerFile(lines);
 
             // 実行
-            var answerList = new AnswerList(path);
+            var answerRequestList = new AnswerRequestList(path);
             var answered = new List<string>();
 
             // 検証: 全員未回答として取得し、読み込まれたメンバーを確認
-            var unanswered = answerList.GetUnansweredList(answered);
+            var unanswered = answerRequestList.GetUnansweredList(answered);
             CollectionAssert.AreEqual(
                 new List<string> { "user1@example.com", "user2@example.com", "user3@example.com" },
                 unanswered
@@ -72,11 +72,11 @@ namespace FormsAnswerChecker.Tests
                 "user3@example.com"
             };
             string path = CreateTempAnswerFile(lines);
-            var answerList = new AnswerList(path);
+            var answerRequestList = new AnswerRequestList(path);
 
             // 実行: user1 だけ回答済み
             var answered = new List<string> { "user1@example.com" };
-            var unanswered = answerList.GetUnansweredList(answered);
+            var unanswered = answerRequestList.GetUnansweredList(answered);
 
             // 検証: user2, user3 が未回答
             CollectionAssert.AreEqual(
@@ -91,11 +91,11 @@ namespace FormsAnswerChecker.Tests
             // 準備
             var lines = new[] { "user1@example.com", "user2@example.com" };
             string path = CreateTempAnswerFile(lines);
-            var answerList = new AnswerList(path);
+            var answerRequestList = new AnswerRequestList(path);
 
             // 実行: 全員回答済み
             var answered = new List<string> { "user1@example.com", "user2@example.com" };
-            var unanswered = answerList.GetUnansweredList(answered);
+            var unanswered = answerRequestList.GetUnansweredList(answered);
 
             // 検証
             Assert.AreEqual(0, unanswered.Count);
@@ -107,11 +107,11 @@ namespace FormsAnswerChecker.Tests
             // 準備
             var lines = new[] { "user1@example.com", "user2@example.com" };
             string path = CreateTempAnswerFile(lines);
-            var answerList = new AnswerList(path);
+            var answerRequestList = new AnswerRequestList(path);
 
             // 実行: 想定外の user99 が回答
             var answered = new List<string> { "user1@example.com", "user99@example.com" };
-            var unexpected = answerList.GetUnexpectedAnsweredList(answered);
+            var unexpected = answerRequestList.GetUnexpectedAnsweredList(answered);
 
             // 検証
             CollectionAssert.AreEqual(
@@ -126,11 +126,11 @@ namespace FormsAnswerChecker.Tests
             // 準備
             var lines = new[] { "user1@example.com" };
             string path = CreateTempAnswerFile(lines);
-            var answerList = new AnswerList(path);
+            var answerRequestList = new AnswerRequestList(path);
 
             // 実行: user99 が2回回答している
             var answered = new List<string> { "user99@example.com", "user99@example.com" };
-            var unexpected = answerList.GetUnexpectedAnsweredList(answered);
+            var unexpected = answerRequestList.GetUnexpectedAnsweredList(answered);
 
             // 検証: 1件のみ取得されること
             CollectionAssert.AreEqual(
@@ -146,11 +146,11 @@ namespace FormsAnswerChecker.Tests
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "TestAnswersList.txt");
 
             // 実行
-            var answerList = new AnswerList(path);
+            var answerRequestList = new AnswerRequestList(path);
             var answered = new List<string>();
 
             // 検証: 全員未回答として取得し、読み込まれたメンバーを確認
-            var unanswered = answerList.GetUnansweredList(answered);
+            var unanswered = answerRequestList.GetUnansweredList(answered);
             CollectionAssert.AreEqual(
                 new List<string> { "user1@example.com", "user2@example.com", "user3@example.com" },
                 unanswered
@@ -166,11 +166,11 @@ namespace FormsAnswerChecker.Tests
             string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "test.xlsx");
 
             // 実行
-            var answerList = new AnswerList(answerListPath);
+            var answerRequestList = new AnswerRequestList(answerListPath);
             var answered = ExcelParser.GetAnsweredList(answeredFilePath);
 
             // 検証: user11のみ未回答として取得されることを確認
-            var unanswered = answerList.GetUnansweredList(answered);
+            var unanswered = answerRequestList.GetUnansweredList(answered);
             CollectionAssert.AreEqual(
                 new List<string> { "user11@example.com" },
                 unanswered
@@ -186,11 +186,11 @@ namespace FormsAnswerChecker.Tests
             string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "test.xlsx");
 
             // 実行
-            var answerList = new AnswerList(answerListPath);
+            var answerRequestList = new AnswerRequestList(answerListPath);
             var answered = ExcelParser.GetAnsweredList(answeredFilePath);
 
             // 検証: 全員回答済みのため、未回答者リストの件数が0であることを確認
-            var unanswered = answerList.GetUnansweredList(answered);
+            var unanswered = answerRequestList.GetUnansweredList(answered);
             Assert.AreEqual(0,unanswered.Count);
         }
 
@@ -203,11 +203,11 @@ namespace FormsAnswerChecker.Tests
             string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "test.xlsx");
 
             // 実行
-            var answerList = new AnswerList(answerListPath);
+            var answerRequestList = new AnswerRequestList(answerListPath);
             var answered = ExcelParser.GetAnsweredList(answeredFilePath);
 
             // 検証: 想定外の回答者(user10)が正しく抽出されるか
-            var unexpected = answerList.GetUnexpectedAnsweredList(answered);
+            var unexpected = answerRequestList.GetUnexpectedAnsweredList(answered);
             CollectionAssert.AreEqual(
                 new List<string> { "user10@example.com" },
                 unexpected
@@ -223,18 +223,18 @@ namespace FormsAnswerChecker.Tests
             string answeredFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "test.xlsx");
 
             // 実行
-            var answerList = new AnswerList(answerListPath);
+            var answerRequestList = new AnswerRequestList(answerListPath);
             var answered = ExcelParser.GetAnsweredList(answeredFilePath);
 
             // 検証: 未回答者(user11)が正しく抽出されること
-            var unanswered = answerList.GetUnansweredList(answered);
+            var unanswered = answerRequestList.GetUnansweredList(answered);
             CollectionAssert.AreEqual(
                 new List<string> { "user11@example.com" },
                 unanswered
             );
 
             // 検証: 想定外の回答者(user10)が正しく抽出されること
-            var unexpected = answerList.GetUnexpectedAnsweredList(answered);
+            var unexpected = answerRequestList.GetUnexpectedAnsweredList(answered);
             CollectionAssert.AreEqual(
                 new List<string> { "user10@example.com" },
                 unexpected

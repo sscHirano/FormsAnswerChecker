@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace FormsAnswerChecker
 {
-    class AnswerList
+    class AnswerRequestList
     {
-        private readonly List<string> mAnswerList = new List<string>();
+        private readonly List<string> mAnswerRequestList = new List<string>();
 
         /// <summary>
         /// コンストラクタ
         /// 指定されたファイルを読み込み、リストを作成する
         /// </summary>
-        /// <param name="filePath">回答者リストファイルのパス</param>
-        internal AnswerList(string filePath)
+        /// <param name="filePath">回答対象者ファイルのパス</param>
+        internal AnswerRequestList(string filePath)
         {
             using (StreamReader streamReader = new StreamReader(filePath, Encoding.UTF8))
             {
@@ -27,7 +27,7 @@ namespace FormsAnswerChecker
                     {
                         continue;
                     }
-                    mAnswerList.Add(member);
+                    mAnswerRequestList.Add(member);
                 }
             }
         }
@@ -40,7 +40,7 @@ namespace FormsAnswerChecker
         internal List<string> GetUnansweredList(List<string> answeredList)
         {
             List<string> unansweredList = new List<string>();
-            foreach (string answer in mAnswerList)
+            foreach (string answer in mAnswerRequestList)
             {
                 if (!answeredList.Contains(answer))
                 {
@@ -60,7 +60,7 @@ namespace FormsAnswerChecker
             List<string> unexpectedList = new List<string>();
             foreach (string answer in answeredList)
             {
-                if (!mAnswerList.Contains(answer) && !unexpectedList.Contains(answer))
+                if (!mAnswerRequestList.Contains(answer) && !unexpectedList.Contains(answer))
                 {
                     unexpectedList.Add(answer);
                 }
