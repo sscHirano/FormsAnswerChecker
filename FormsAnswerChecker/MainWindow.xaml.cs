@@ -99,6 +99,7 @@ namespace FormsAnswerChecker
             }
             catch (IOException)
             {
+                mAnswerRequestList = null;
                 return false;
             }
             return true;
@@ -113,9 +114,8 @@ namespace FormsAnswerChecker
                     SetErrorMessage(Properties.Resources.AnswerListNotLoaded);
                     return;
                 }
-
-                var fileNames = (string[])dragEvent.Data.GetData(DataFormats.FileDrop);
                 // 複数ファイルがドロップされても、最初のファイルしか見ない。
+                var fileNames = (string[])dragEvent.Data.GetData(DataFormats.FileDrop);
 
                 // 回答済みリストを取得
                 try
