@@ -42,7 +42,7 @@ namespace FormsAnswerChecker
             List<string> unansweredList = new List<string>();
             foreach (string answer in mAnswerRequestList)
             {
-                if (!answeredList.Contains(answer))
+                if (!answeredList.Contains(answer) && !unansweredList.Contains(answer))
                 {
                     unansweredList.Add(answer);
                 }
