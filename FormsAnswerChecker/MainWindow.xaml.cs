@@ -117,11 +117,13 @@ namespace FormsAnswerChecker
                 // 複数ファイルがドロップされても、最初のファイルしか見ない。
                 var fileNames = (string[])dragEvent.Data.GetData(DataFormats.FileDrop);
 
-                // 回答済みリストを取得
                 try
                 {
+                    // 実際の回答者一覧
                     List<string> answeredList = ExcelParser.GetAnsweredList(fileNames[0]);
+                    // 回答対象者リストのうち、まだ回答していない未回答者一覧
                     List<string> unansweredList = mAnswerRequestList.GetUnansweredList(answeredList);
+                    // 回答対象者リストに含まれていない、想定外の回答者一覧
                     List<string> unexpectedList = mAnswerRequestList.GetUnexpectedAnsweredList(answeredList);
 
                     ShowResult(unansweredList, unexpectedList);
