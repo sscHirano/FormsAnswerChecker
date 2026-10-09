@@ -1,0 +1,3 @@
+osakaUser1@example.com
+osakaUser2@example.com
+osakaUser3@example.com

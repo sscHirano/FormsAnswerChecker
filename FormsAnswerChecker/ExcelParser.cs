@@ -1,4 +1,4 @@
-﻿using ClosedXML.Excel;
+using ClosedXML.Excel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ namespace FormsAnswerChecker
         /// <summary>
         /// メールアドレスの列(D列)Index
         /// </summary>
-        private static readonly int MAIL_ADDRESS_INDEX = 4;
+        private const int MAIL_ADDRESS_INDEX = 4;
 
         /// <summary>
         /// 回答済みメンバー(メールアドレス)一覧を取得する
@@ -21,18 +21,24 @@ namespace FormsAnswerChecker
         /// <returns></returns>
         internal static List<string> GetAnsweredList(string fileName)
         {
-            XLWorkbook workbook = new XLWorkbook(fileName);
-            IXLWorksheet worksheet = workbook.Worksheet(1);
-            int lastRow = worksheet.LastRowUsed().RowNumber();
-            // 回答済みメンバー(メールアドレス)一覧を取得
-            List<string> answeredLisd = new List<string>(lastRow);
-            for (int i = 1; i <= lastRow; i++)
+            using (XLWorkbook workbook = new XLWorkbook(fileName))
             {
-                IXLCell cell = worksheet.Cell(i, MAIL_ADDRESS_INDEX);
-                Console.WriteLine(cell.Value);
-                answeredLisd.Add(cell.Value.ToString());
+                IXLWorksheet worksheet = workbook.Worksheet(1);
+                var lastRowUsed = worksheet.LastRowUsed();
+                if (lastRowUsed == null)
+                {
+                    return new List<string>();
+                }
+                int lastRow = lastRowUsed.RowNumber();
+                List<string> answeredLisd = new List<string>(lastRow);
+                // 回答済みメンバー(メールアドレス)一覧を取得 (1行目はヘッダー行のため2行目から開始。Excelライブラリではindexが1始まり)
+                for (int i = 2; i <= lastRow; i++)
+                {
+                    IXLCell cell = worksheet.Cell(i, MAIL_ADDRESS_INDEX);
+                    answeredLisd.Add(cell.Value.ToString());
+                }
+                return answeredLisd;
             }
-            return answeredLisd;
         }
     }
 }

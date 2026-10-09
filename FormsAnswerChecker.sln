@@ -1,9 +1,11 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormsAnswerChecker", "FormsAnswerChecker\FormsAnswerChecker.csproj", "{0C6B5E1F-230E-433A-9470-05BE3295977F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormsAnswerChecker.Tests", "FormsAnswerChecker.Tests\FormsAnswerChecker.Tests.csproj", "{A44965B8-2E2D-4D29-860C-A601C3AE1317}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{0C6B5E1F-230E-433A-9470-05BE3295977F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C6B5E1F-230E-433A-9470-05BE3295977F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C6B5E1F-230E-433A-9470-05BE3295977F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A44965B8-2E2D-4D29-860C-A601C3AE1317}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A44965B8-2E2D-4D29-860C-A601C3AE1317}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A44965B8-2E2D-4D29-860C-A601C3AE1317}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A44965B8-2E2D-4D29-860C-A601C3AE1317}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -59,5 +59,41 @@ namespace FormsAnswerChecker.Properties {
                 resourceCulture = value;
             }
         }
+
+        internal static string AnswerListsDirectoryName {
+            get {
+                return ResourceManager.GetString("AnswerListsDirectoryName", resourceCulture);
+            }
+        }
+
+        internal static string AnswerListsNotFoundPrefix {
+            get {
+                return ResourceManager.GetString("AnswerListsNotFoundPrefix", resourceCulture);
+            }
+        }
+
+        internal static string AnswerListsNotFoundSuffix {
+            get {
+                return ResourceManager.GetString("AnswerListsNotFoundSuffix", resourceCulture);
+            }
+        }
+
+        internal static string FileLoadErrorPrefix {
+            get {
+                return ResourceManager.GetString("FileLoadErrorPrefix", resourceCulture);
+            }
+        }
+
+        internal static string AnswerListNotLoaded {
+            get {
+                return ResourceManager.GetString("AnswerListNotLoaded", resourceCulture);
+            }
+        }
+
+        internal static string FileAccessError {
+            get {
+                return ResourceManager.GetString("FileAccessError", resourceCulture);
+            }
+        }
     }
 }
